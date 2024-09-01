@@ -3,10 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatGPT</title>
+    <title>GPU Information</title>
 </head>
 <body>
-    <h2>ChatGPT Interface</h2>
-    <p>This is a placeholder for ChatGPT interaction.</p>
+    <h1>GPU Information</h1>
+    
+    <button id="gpuButton">Show GPU Information</button>
+    
+    <div id="gpuInfo" style="margin-top: 20px;"></div>
+
+    <script>
+        // Function to show GPU information
+        function showGPUInformation() {
+            const canvas = document.createElement('canvas');
+            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+
+            if (gl) {
+                const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                if (debugInfo) {
+                    const vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
+                    const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+
+                    const gpuInfo = `
+                        <p>GPU Vendor: ${vendor}</p>
+                        <p>GPU Renderer: ${renderer}</p>
+                    `;
+
+                    document.getElementById("gpuInfo").innerHTML = gpuInfo;
+                } else {
+                    document.getElementById("gpuInfo").innerHTML = "<p>WebGL Debug Renderer Info not available.</p>";
+                }
+            } else {
+                document.getElementById("gpuInfo").innerHTML = "<p>WebGL not supported in this browser.</p>";
+            }
+        }
+
+        // Attach the click event to the button
+        document.getElementById("gpuButton").addEventListener("click", showGPUInformation);
+    </script>
 </body>
 </html>
