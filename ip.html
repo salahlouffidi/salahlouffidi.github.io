@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Agent Fingerprint Test</title>
+</head>
+<body>
+  <h1>Agent Browser Fingerprint</h1>
+  <pre id="output">Collecting data...</pre>
+
+  <script>
+    async function getPublicIP() {
+      try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        return data.ip;
+      } catch (e) {
+        return "Error getting IP";
+      }
+    }
+
+    function getGPUInfo() {
+      try {
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        if (!gl) return "WebGL not supported";
+        const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+        return debugInfo
+          ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+          : "GPU info not available";
+      } catch (e) {
+        return "Error getting GPU";
+      }
+    }
+
+    function getCPUThreads() {
+      return navigator.hardwareConcurrency || "Unknown";
+    }
+
+    async function runFingerprint() {
+      const ip = await getPublicIP();
+      const gpu = getGPUInfo();
+      const cpu = getCPUThreads();
+
+      const result = `
+      Public IP: ${ip}
+      CPU Threads: ${cpu}
+      GPU Info: ${gpu}
+      `;
+
+      document.getElementById('output').textContent = result;
+
+      // Optional: send to your server
+      fetch('https://YOUR_SERVER/logger', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ip, cpu, gpu })
+      });
+    }
+
+    runFingerprint();
+  </script>
+</body>
+</html>
