@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+(() => {
+  const a = document.createElement("a");
+  a.href = ""; // empty means current page's URL
+  a.target = "_blank";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+})();
+</script>
+</body>
+</html>
