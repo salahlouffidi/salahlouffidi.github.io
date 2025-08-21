@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h2>MSRC Agent Browser Bypass PoC</h2>
+  <pre id="out"></pre>
+
+  <script>
+    const out = document.getElementById("out");
+    function log(msg){ out.textContent += msg + "\n"; }
+
+    // User agent & platform
+    log("User Agent: " + navigator.userAgent);
+    log("Platform: " + navigator.platform);
+
+    // CPU & RAM
+    log("CPU cores: " + navigator.hardwareConcurrency);
+    log("Device memory: " + navigator.deviceMemory + " GB");
+
+    // Screen info
+    log("Screen: " + screen.width + "x" + screen.height);
+
+    // WebGL renderer (fingerprint)
+    try {
+      const canvas = document.createElement("canvas");
+      const gl = canvas.getContext("webgl");
+      const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+      log("WebGL Renderer: " + gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL));
+    } catch(e) { log("WebGL blocked: " + e); }
+
+    // Audio fingerprint
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const analyser = ctx.createAnalyser();
+      osc.connect(analyser);
+      osc.start(0);
+      log("AudioContext sampleRate: " + ctx.sampleRate);
+    } catch(e) { log("Audio blocked: " + e); }
+  </script>
+</body>
+</htm>
