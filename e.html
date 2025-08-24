@@ -1,0 +1,97 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Select, Preview & Upload Files</title>
+
+<h1>File select, preview & upload</h1>
+
+<!-- Simple controls -->
+<p>
+  <button id="pick">Choose file(s)</button>
+  <button id="uploadFetch" disabled>Upload (fetch)</button>
+  <button id="uploadForm" disabled>Upload (form POST)</button>
+</p>
+
+<label>Upload URL:
+  <input id="url" size="50" value="https://httpbin.org/post">
+</label>
+
+<!-- Preview + status -->
+<h2>Selected files</h2>
+<ul id="list"></ul>
+
+<!-- Hidden input lives in a form so the form POST works -->
+<form id="form" action="https://httpbin.org/post" method="POST" enctype="multipart/form-data" target="_blank">
+  <input type="file" id="file" name="files" multiple hidden>
+</form>
+
+<script>
+  const fileInput = document.getElementById('file');
+  const pickBtn = document.getElementById('pick');
+  const uploadFetchBtn = document.getElementById('uploadFetch');
+  const uploadFormBtn = document.getElementById('uploadForm');
+  const list = document.getElementById('list');
+  const urlInput = document.getElementById('url');
+  const form = document.getElementById('form');
+
+  let files = [];
+
+  // Clicking this opens the OS file picker (often starting at Desktop, depending on your OS settings)
+  pickBtn.onclick = () => fileInput.click();
+
+  fileInput.onchange = () => {
+    files = Array.from(fileInput.files || []);
+    list.innerHTML = '';
+    const hasFiles = files.length > 0;
+    uploadFetchBtn.disabled = !hasFiles;
+    uploadFormBtn.disabled = !hasFiles;
+
+    files.forEach(f => {
+      const li = document.createElement('li');
+      li.textContent = f.name + ' (' + (f.type || 'unknown') + ', ' + f.size + ' bytes)';
+      list.appendChild(li);
+
+      if (f.type && f.type.startsWith('image/')) {
+        const img = document.createElement('img');
+        img.alt = f.name;
+        img.style.maxWidth = '240px';
+        img.style.display = 'block';
+        img.src = URL.createObjectURL(f);
+        li.appendChild(img);
+      } else if (f.type && f.type.startsWith('text/') && f.size < 100*1024) {
+        const pre = document.createElement('pre');
+        const reader = new FileReader();
+        reader.onload = e => { pre.textContent = e.target.result; };
+        reader.readAsText(f);
+        li.appendChild(pre);
+      }
+    });
+  };
+
+  // Upload via fetch (may require same-origin or CORS permission)
+  uploadFetchBtn.onclick = async () => {
+    const endpoint = urlInput.value.trim();
+    if (!endpoint) { alert('Please enter an upload URL.'); return; }
+
+    const fd = new FormData();
+    files.forEach((f, i) => fd.append('file' + i, f, f.name));
+
+    try {
+      const resp = await fetch(endpoint, { method: 'POST', body: fd });
+      const text = await resp.text();
+      alert('Fetch upload finished (HTTP ' + resp.status + '). Opening response in a new tab.');
+      const w = window.open('', '_blank');
+      w.document.write('<pre>' + text.replace(/[<>&]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[c])) + '</pre>');
+    } catch (err) {
+      alert('Fetch upload error: ' + err);
+    }
+  };
+
+  // Upload via classic form POST (opens target in new tab)
+  uploadFormBtn.onclick = () => {
+    const endpoint = urlInput.value.trim();
+    if (!endpoint) { alert('Please enter an upload URL.'); return; }
+    form.action = endpoint;
+    // Submitting the form will include the selected files automatically
+    form.submit();
+  };
+</script>
