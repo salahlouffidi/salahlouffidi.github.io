@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <body>
+    <button id="pick">Pick a folder</button>
+    <button id="save">Save a file</button>
+
+    <script>
+      document.getElementById('pick').addEventListener('click', async () => {
+        // User picks a folder (can be on a USB/SD drive)
+        const dir = await window.showDirectoryPicker();
+        for await (const [name, handle] of dir.entries()) {
+          if (handle.kind === "file") {
+            const file = await handle.getFile();
+            console.log(name, file.size);
+          }
+        }
+      });
+
+      document.getElementById('save').addEventListener('click', async () => {
+        // Save a new file
+        const fileHandle = await window.showSaveFilePicker({ suggestedName: "test.txt" });
+        const writable = await fileHandle.createWritable();
+        await writable.write("hello from Edge");
+        await writable.close();
+      });
+    </script>
+  </body>
+</html>
