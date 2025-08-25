@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Memory Hog Simulation</title>
+</head>
+<body>
+  <h2>Memory Hog Simulation</h2>
+  <button onclick="startHog()">Start Hogging</button>
+  <button onclick="stopHog()">Stop Hogging</button>
+
+  <script>
+    let memoryHog = [];
+    let stop = false;
+
+    function startHog(allocationSize = 10 * 1024 * 1024) { // 10 MB chunks
+      stop = false;
+      let i = 0;
+
+      function allocate() {
+        if (stop) return;
+        memoryHog.push(new Uint8Array(allocationSize));
+        if (i % 100 === 0) {
+          console.log("Memory chunks allocated:", memoryHog.length);
+        }
+        i++;
+        requestAnimationFrame(allocate);
+      }
+
+      allocate();
+    }
+
+    function stopHog() {
+      stop = true;
+      console.log("Memory allocation stopped.");
+    }
+  </script>
+</body>
+</html>
