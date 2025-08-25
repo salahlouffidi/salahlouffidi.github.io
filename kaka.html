@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+(() => {
+  // create a hidden link
+  const a = document.createElement("a");
+  a.href = "file://c:/";     // the popup target
+  a.target = "_blank";
+  document.body.appendChild(a);
+
+  // open popup
+  a.click();
+  a.remove();
+
+  // show an alert right after
+  alert("Popup opened! To open the browser's Task Manager, press Shift + Esc.");
+})();
+</script>
+</body>
+</html>
