@@ -14,20 +14,20 @@
   </style>
 
   <!-- External image directly (classic) -->
-  <image href="https://3f5b31f523a6.ngrok-free.app/image-href.png" x="0" y="0" width="10" height="10"/>
+  <image href="https://d82a974109b0.ngrok-free.app/image-href.png" x="0" y="0" width="10" height="10"/>
 
   <!-- xlink:href variant for older renderers -->
-  <image xlink:href="https://3f5b31f523a6.ngrok-free.app/image-xlink.png" x="10" y="0" width="10" height="10"/>
+  <image xlink:href="https://d82a974109b0.ngrok-free.app/image-xlink.png" x="10" y="0" width="10" height="10"/>
 
   <!-- Pattern that pulls an external image -->
   <defs>
     <pattern id="p" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-      <image xlink:href="https://3f5b31f523a6.ngrok-free.app/pattern.png" width="10" height="10"/>
+      <image xlink:href="https://d82a974109b0.ngrok-free.app/pattern.png" width="10" height="10"/>
     </pattern>
 
     <!-- Filter with feImage referencing external URL -->
     <filter id="f">
-      <feImage xlink:href="https://3f5b31f523a6.ngrok-free.app/feimage.png"/>
+      <feImage xlink:href="https://d82a974109b0.ngrok-free.app/feimage.png"/>
     </filter>
   </defs>
 
