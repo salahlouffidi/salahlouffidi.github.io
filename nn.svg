@@ -14,20 +14,20 @@
   </style>
 
   <!-- External image directly (classic) -->
-  <image href="https://d36rugappb7igk40auvgua47a85yqwpi5.oast.site/image-href.png" x="0" y="0" width="10" height="10"/>
+  <image href="https://d37d3n2ppb7m345qk73gdspugdmfhyb4c.oast.site/image-href.png" x="0" y="0" width="10" height="10"/>
 
   <!-- xlink:href variant for older renderers -->
-  <image xlink:href="https://d36rugappb7igk40auvgua47a85yqwpi5.oast.siten/image-xlink.png" x="10" y="0" width="10" height="10"/>
+  <image xlink:href="https://d37d3n2ppb7m345qk73gdspugdmfhyb4c.oast.site/image-xlink.png" x="10" y="0" width="10" height="10"/>
 
   <!-- Pattern that pulls an external image -->
   <defs>
     <pattern id="p" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-      <image xlink:href="https://d36rugappb7igk40auvgua47a85yqwpi5.oast.site/pattern.png" width="10" height="10"/>
+      <image xlink:href="https://d37d3n2ppb7m345qk73gdspugdmfhyb4c.oast.site/pattern.png" width="10" height="10"/>
     </pattern>
 
     <!-- Filter with feImage referencing external URL -->
     <filter id="f">
-      <feImage xlink:href="https://d36rugappb7igk40auvgua47a85yqwpi5.oast.site/feimage.png"/>
+      <feImage xlink:href="https://d37d3n2ppb7m345qk73gdspugdmfhyb4c.oast.site/feimage.png"/>
     </filter>
   </defs>
 
@@ -35,7 +35,7 @@
   <rect x="0" y="45" width="50" height="20" filter="url(#f)"/>
 
   <!-- External symbol via <use> to a remote sprite -->
-  <use x="0" y="70" xlink:href="https://d36rugappb7igk40auvgua47a85yqwpi5.oast.site/sprite.svg#logo" width="20" height="20"/>
+  <use x="0" y="70" xlink:href="https://d37d3n2ppb7m345qk73gdspugdmfhyb4c.oast.site/sprite.svg#logo" width="20" height="20"/>
 
   <!-- Text to encourage font download -->
   <text x="5" y="95" font-size="10">trigger</text>
