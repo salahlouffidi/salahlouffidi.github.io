@@ -90,23 +90,6 @@
       line-height: 1.4;
     }
     
-    .note {
-      position: fixed;
-      right: 30px;
-      bottom: 30px;
-      color: #64c8ff;
-      background: rgba(0,0,0,.8);
-      padding: 14px 24px;
-      border-radius: 10px;
-      font-size: 18px;
-      z-index: 5;
-      border: 2px solid rgba(100, 200, 255, 0.4);
-      box-shadow: 0 4px 15px rgba(100, 200, 255, 0.2);
-      text-transform: uppercase;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-    
     .status {
       position: fixed;
       left: 30px;
@@ -141,7 +124,7 @@
       .comment {
         font-size: 20px;
       }
-      .note, .status {
+      .status {
         font-size: 16px;
         padding: 10px 15px;
       }
@@ -172,7 +155,6 @@
   </div>
   
   <div class="status" id="status">Ready</div>
-  <div class="note">Smart TV Optimized • Sandboxed Player</div>
   
   <script>
     const statusEl = document.getElementById('status');
