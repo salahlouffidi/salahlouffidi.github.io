@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
   <meta name="referrer" content="no-referrer">
-  <title>Live TV Player</title>
+  <title>Louffi TV</title>
   <style>
     * {
       margin: 0;
@@ -44,56 +44,11 @@
     }
     
     .title {
-      font-size: 48px;
+      font-size: 72px;
       font-weight: bold;
       margin-bottom: 8px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,.8);
-      letter-spacing: 2px;
-    }
-    
-    .subtitle {
-      font-size: 24px;
-      color: #aaa;
-      text-shadow: 1px 1px 2px rgba(0,0,0,.8);
-    }
-    
-    .channel-selector {
-      display: flex;
-      gap: 15px;
-      padding: 0 40px;
-    }
-    
-    .channel-btn {
-      background: rgba(255,255,255,.15);
-      border: 3px solid rgba(255,255,255,.3);
-      color: white;
-      padding: 16px 32px;
-      font-size: 26px;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: bold;
-      min-width: 180px;
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      box-shadow: 0 4px 15px rgba(0,0,0,.5);
-    }
-    
-    .channel-btn:hover,
-    .channel-btn:focus {
-      background: rgba(255,255,255,.35);
-      border-color: rgba(255,255,255,.8);
-      transform: scale(1.08);
-      outline: none;
-      box-shadow: 0 6px 20px rgba(255,255,255,.3);
-    }
-    
-    .channel-btn.active {
-      background: linear-gradient(135deg, #ff006e, #8338ec);
-      border-color: #ff006e;
-      box-shadow: 0 0 30px rgba(255, 0, 110, 0.8);
-      transform: scale(1.1);
+      text-shadow: 3px 3px 6px rgba(0,0,0,.8);
+      letter-spacing: 3px;
     }
     
     .video-container {
@@ -108,55 +63,6 @@
       border: 0;
       display: block;
       background: #000;
-    }
-    
-    .controls {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(to top, rgba(0,0,0,.95), transparent);
-      padding: 40px;
-      z-index: 10;
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-      flex-wrap: wrap;
-    }
-    
-    .controls.visible {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    
-    .control-btn {
-      background: rgba(100, 200, 255, 0.2);
-      border: 2px solid #64c8ff;
-      color: #64c8ff;
-      padding: 14px 28px;
-      font-size: 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      min-width: 200px;
-      text-align: center;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      box-shadow: 0 4px 15px rgba(100, 200, 255, 0.2);
-    }
-    
-    .control-btn:hover,
-    .control-btn:focus {
-      background: rgba(100, 200, 255, 0.4);
-      border-color: #64c8ff;
-      transform: scale(1.05);
-      outline: none;
-      box-shadow: 0 6px 20px rgba(100, 200, 255, 0.5);
     }
     
     .note {
@@ -194,68 +100,17 @@
       letter-spacing: 1px;
     }
     
-    .current-channel {
-      position: fixed;
-      top: 30px;
-      right: 30px;
-      color: #ff006e;
-      background: rgba(0,0,0,.8);
-      padding: 14px 24px;
-      border-radius: 10px;
-      font-size: 24px;
-      z-index: 5;
-      border: 3px solid #ff006e;
-      box-shadow: 0 0 30px rgba(255, 0, 110, 0.4);
-      text-transform: uppercase;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-    
     @media (max-width: 1920px) {
       .title {
-        font-size: 36px;
-      }
-      .subtitle {
-        font-size: 18px;
-      }
-      .channel-btn {
-        padding: 12px 24px;
-        font-size: 22px;
-        min-width: 160px;
-      }
-      .control-btn {
-        padding: 10px 20px;
-        font-size: 18px;
-        min-width: 180px;
+        font-size: 56px;
       }
     }
     
     @media (max-width: 1280px) {
-      .header {
-        flex-direction: column;
-        gap: 20px;
-      }
       .title {
-        font-size: 28px;
+        font-size: 42px;
       }
-      .subtitle {
-        font-size: 16px;
-      }
-      .channel-selector {
-        padding: 0;
-        justify-content: center;
-      }
-      .channel-btn {
-        padding: 10px 20px;
-        font-size: 18px;
-        min-width: 140px;
-      }
-      .control-btn {
-        padding: 8px 16px;
-        font-size: 16px;
-        min-width: 150px;
-      }
-      .note, .status, .current-channel {
+      .note, .status {
         font-size: 16px;
         padding: 10px 15px;
       }
@@ -266,14 +121,7 @@
   <div class="player-wrap">
     <div class="header">
       <div class="header-left">
-        <div class="title">📺 LIVE TV</div>
-        <div class="subtitle">High Definition Streaming</div>
-      </div>
-      <div class="channel-selector" id="channelSelector">
-        <button class="channel-btn active" data-channel="1">Channel 1</button>
-        <button class="channel-btn" data-channel="2">Channel 2</button>
-        <button class="channel-btn" data-channel="3">Channel 3</button>
-        <button class="channel-btn" data-channel="4">Channel 4</button>
+        <div class="title">🎬 LOUFFI TV</div>
       </div>
     </div>
     
@@ -289,150 +137,16 @@
         sandbox="allow-scripts allow-same-origin allow-forms allow-presentation">
       </iframe>
     </div>
-    
-    <div class="controls" id="controls">
-      <button class="control-btn" id="fullscreenBtn">⛶ Fullscreen</button>
-      <button class="control-btn" id="volumeBtn">🔊 Volume</button>
-      <button class="control-btn" id="reloadBtn">🔄 Reload</button>
-    </div>
   </div>
   
-  <div class="current-channel" id="currentChannel">Channel 1</div>
   <div class="status" id="status">Ready</div>
   <div class="note">Smart TV Optimized • Sandboxed Player</div>
   
   <script>
-    const controls = document.getElementById('controls');
     const statusEl = document.getElementById('status');
-    const currentChannelEl = document.getElementById('currentChannel');
-    const playerWrap = document.querySelector('.player-wrap');
-    const fullscreenBtn = document.getElementById('fullscreenBtn');
-    const reloadBtn = document.getElementById('reloadBtn');
-    const volumeBtn = document.getElementById('volumeBtn');
-    const player = document.getElementById('player');
-    const channelButtons = document.querySelectorAll('.channel-btn');
-    
-    let controlsTimeout;
-    let isFullscreen = false;
-    let isMuted = false;
-    let currentChannel = 1;
-    
-    const channels = {
-      1: 'https://24.streemach.site/albaplayer/live3/',
-      2: 'https://24.streemach.site/albaplayer/live3/',
-      3: 'https://24.streemach.site/albaplayer/live3/',
-      4: 'https://24.streemach.site/albaplayer/live3/'
-    };
-    
-    // Show controls on any movement/key press
-    function showControls() {
-      controls.classList.add('visible');
-      clearTimeout(controlsTimeout);
-      controlsTimeout = setTimeout(() => {
-        controls.classList.remove('visible');
-      }, 5000);
-    }
-    
-    // Channel switching
-    channelButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const channel = btn.dataset.channel;
-        switchChannel(channel);
-      });
-    });
-    
-    function switchChannel(channelNum) {
-      currentChannel = channelNum;
-      
-      // Update button states
-      channelButtons.forEach(btn => {
-        if (btn.dataset.channel === channelNum) {
-          btn.classList.add('active');
-        } else {
-          btn.classList.remove('active');
-        }
-      });
-      
-      // Update player and display
-      currentChannelEl.textContent = `Channel ${channelNum}`;
-      statusEl.textContent = `Loading Channel ${channelNum}...`;
-      player.src = channels[channelNum];
-      
-      setTimeout(() => {
-        statusEl.textContent = `Channel ${channelNum} Ready`;
-      }, 2000);
-    }
-    
-    // Event listeners for Smart TV remotes
-    document.addEventListener('mousemove', showControls);
-    document.addEventListener('keydown', (e) => {
-      showControls();
-      
-      // Remote key handling
-      switch(e.key) {
-        case 'Enter':
-          toggleFullscreen();
-          break;
-        case ' ':
-          e.preventDefault();
-          showControls();
-          break;
-        case 'ArrowRight':
-          if (currentChannel < 4) switchChannel(String(currentChannel + 1));
-          break;
-        case 'ArrowLeft':
-          if (currentChannel > 1) switchChannel(String(currentChannel - 1));
-          break;
-        case 'ArrowUp':
-        case 'ArrowDown':
-          showControls();
-          break;
-        case 'Escape':
-          if (isFullscreen) {
-            toggleFullscreen();
-          }
-          break;
-      }
-    });
-    
-    // Button click handlers
-    fullscreenBtn.addEventListener('click', toggleFullscreen);
-    reloadBtn.addEventListener('click', reloadPlayer);
-    volumeBtn.addEventListener('click', toggleMute);
-    
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        playerWrap.requestFullscreen().catch(err => {
-          statusEl.textContent = '⚠ Fullscreen not available';
-        });
-        isFullscreen = true;
-        fullscreenBtn.textContent = '⛶ Exit Fullscreen';
-      } else {
-        document.exitFullscreen();
-        isFullscreen = false;
-        fullscreenBtn.textContent = '⛶ Fullscreen';
-      }
-    }
-    
-    function reloadPlayer() {
-      statusEl.textContent = 'Reloading Channel ' + currentChannel + '...';
-      player.src = player.src;
-      setTimeout(() => {
-        statusEl.textContent = 'Channel ' + currentChannel + ' Ready';
-      }, 2000);
-    }
-    
-    function toggleMute() {
-      isMuted = !isMuted;
-      volumeBtn.textContent = isMuted ? '🔇 Unmute' : '🔊 Volume';
-      statusEl.textContent = isMuted ? 'Muted' : 'Sound On';
-    }
     
     // Initial state
-    statusEl.textContent = 'Channel 1 Ready • Press arrow keys to change channels';
-    setTimeout(() => {
-      statusEl.textContent = 'Ready';
-    }, 3000);
+    statusEl.textContent = 'Ready';
   </script>
 </body>
 </html>
