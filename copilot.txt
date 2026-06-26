@@ -1,0 +1,111 @@
+AXA - Details des vulnerabilites
+
+1. Divulgation de version Nginx
+
+Champ | Valeur
+--- | ---
+Vulnerabilite | Divulgation de version serveur
+Actif concerne | https://spoolnet-v3-pp.axa-courtage.fr
+Severite | Faible
+Preuve | En-tete HTTP Server: nginx/1.20.1
+
+Description
+L'application expose la technologie serveur utilisee ainsi que sa version exacte via les en-tetes HTTP retournes par le serveur.
+
+Observation
+Lors des echanges HTTP avec l'application Spoolnet, l'en-tete de reponse suivant a ete observe :
+
+Server: nginx/1.20.1
+
+Cette information permet d'identifier precisement la version du serveur web expose.
+
+Impact
+Un attaquant peut utiliser cette information pour orienter ses recherches vers des vulnerabilites connues affectant cette version de Nginx. Meme si cette divulgation ne permet pas a elle seule une compromission, elle facilite la phase de reconnaissance.
+
+Recommandation
+Masquer ou generaliser l'en-tete Server afin de ne pas exposer la version exacte du composant serveur. Maintenir egalement Nginx a jour avec les correctifs de securite.
+
+
+2. Divulgation d'informations techniques Jackson / Java
+
+Champ | Valeur
+--- | ---
+Vulnerabilite | Message d'erreur verbeux cote backend
+Actif concerne | Spoolnet API
+Severite | Faible a Moyenne
+Preuve | Erreur Jackson / Java retournee dans la reponse API
+
+Description
+L'API retourne des messages d'erreur techniques detailles lors de l'envoi de donnees invalides. Ces messages revelent des informations sur les composants backend utilises, notamment Jackson et des types Java internes.
+
+Observation
+Lors d'une requete envoyee vers l'API, la reponse d'erreur expose un message de deserialisation de type Jackson, par exemple :
+
+Cannot deserialize value of type java.lang.String
+
+Ce comportement revele la technologie utilisee cote serveur ainsi que des details sur le traitement des objets JSON.
+
+Impact
+Ces informations peuvent aider un attaquant a comprendre la structure interne de l'application, identifier les bibliotheques utilisees, adapter ses payloads et affiner ses tests sur les points d'entree API.
+
+Recommandation
+Remplacer les erreurs techniques par des messages generiques cote client. Les details techniques doivent etre conserves uniquement dans les journaux serveur internes, accessibles aux equipes habilitees.
+
+
+3. Divulgation de domaines internes via fichier de configuration accessible sans authentification
+
+Champ | Valeur
+--- | ---
+Vulnerabilite | Exposition de configuration applicative
+Actif concerne | https://capged-admin-pp.axa-fr.intraxa/config.json
+Severite | Moyenne
+Preuve | Acces curl non authentifie au fichier de configuration
+
+Description
+Un fichier de configuration frontend est accessible sans authentification et expose des informations internes sur l'environnement, les chemins API et des liens vers d'autres composants applicatifs.
+
+Observation
+Depuis une simple requete GET, le fichier de configuration retourne des informations sensibles telles que :
+
+currentEnvironment: preprod
+apiUrl.base: /api/
+viewerUrl: https://ged-viewer-pp.axa-fr.intraxa/arondor-arender-hmi/ARender.jsp
+testDocUuid: <valeur masquee>
+
+Le fichier permet d'identifier des composants internes comme CAPGED, FrontGED et Arender, sans authentification prealable.
+
+Impact
+Cette exposition facilite la reconnaissance interne de l'application. Un attaquant peut cartographier les domaines, identifier les services lies, decouvrir des chemins API et reutiliser ces informations pour cibler directement d'autres composants.
+
+Recommandation
+Limiter le contenu expose dans les fichiers de configuration frontend. Les URLs internes, identifiants de test, UUID de documents ou parametres sensibles ne doivent pas etre accessibles publiquement. Lorsque ces informations sont necessaires, elles doivent etre servies apres authentification et filtrees selon le profil utilisateur.
+
+
+4. Contournement de validation FrontGED par manipulation de reponse
+
+Champ | Valeur
+--- | ---
+Vulnerabilite | Controle de validation contournable cote client
+Actif concerne | https://frontged-users-pp.axa-fr.intraxa
+Severite | Elevee a confirmer selon acces obtenu
+Preuve | Modification de la reponse via Burp en 200, autorise, disponible
+
+Description
+La validation d'un contrat semble pouvoir etre influencee par la manipulation de la reponse serveur interceptee cote client. En modifiant la reponse via Burp Suite, un contrat initialement non valide peut etre presente comme autorise et disponible.
+
+Observation
+Lors de la validation d'un numero de contrat depuis FrontGED, la reponse interceptee a ete modifiee afin de retourner un etat favorable, notamment :
+
+{
+  "code": 200,
+  "autorise": true,
+  "disponible": true
+}
+
+Apres modification, l'interface accepte le contrat comme valide, alors que celui-ci ne devrait pas l'etre.
+
+Impact
+Si les controles metiers suivants se basent sur cet etat manipulable, un attaquant pourrait contourner la validation de contrat et acceder a des fonctions ou donnees non autorisees. Le risque devient critique si cette validation permet ensuite la consultation ou l'action sur des documents lies au contrat.
+
+Recommandation
+Toutes les validations de contrat et d'autorisation doivent etre appliquees cote serveur a chaque etape sensible. L'application ne doit jamais faire confiance a un etat retourne puis controle uniquement cote client. Toute action ulterieure doit reverifier l'eligibilite du contrat, l'identite de l'utilisateur et ses droits d'acces cote backend.
