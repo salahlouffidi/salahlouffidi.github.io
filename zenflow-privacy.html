@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Privacy notice for ZenFlow AI, an independent Jira application by LOUFFI Edition.">
+<title>ZenFlow AI — Privacy Notice</title>
+<style>
+:root{color-scheme:light;--bg:#f8f9fc;--ink:#1a2332;--muted:#536273;--edge:#e1e6ee;--link:#285baf}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{max-width:790px;margin:40px auto;padding:40px 48px;background:#fff;border:1px solid var(--edge);border-radius:16px}h1{font-size:clamp(26px,4.8vw,36px);line-height:1.2;letter-spacing:-.025em;margin:0 0 12px}h2{font-size:20px;line-height:1.35;margin:32px 0 12px;padding-top:20px;border-top:1px solid var(--edge)}p{margin:0 0 15px}main>p:first-of-type{color:var(--muted);font-size:14px}a{color:var(--link);overflow-wrap:anywhere}a:focus-visible{outline:3px solid var(--link);outline-offset:3px}code{font-size:.9em;background:#eef2f6;border-radius:4px;padding:2px 4px;overflow-wrap:anywhere}footer{max-width:790px;margin:0 auto 32px;text-align:center;color:var(--muted);font-size:13px}@media(max-width:650px){main{margin:16px;padding:24px}footer{padding:0 16px}}
+</style>
+</head>
+<body>
+<main>
+<h1>ZenFlow AI — privacy notice</h1>
+<p>Updated: 24 November 2026</p>
+<p>This notice describes the current ZenFlow AI hackathon application, developed by Salah Eddine Louffidi (LOUFFI Edition).</p>
+<h2>Purpose and Jira access</h2>
+<p>ZenFlow is intended for personal triage of Jira work. In Jira mode, its Forge resolver runs as the signed-in user, uses the read-only <code>read:jira-work</code> scope, and reads assigned open issues that the user is permitted to access. The dashboard reads issue keys, summaries, priorities, due dates and status. ZenFlow uses these fields to display tickets, organize them in the visual interface and provide local rule-based suggestions.</p>
+<p>ZenFlow does not change Jira issue records. The Do Now, Later and Archive queues are personal application preferences.</p>
+<h2>Browser storage</h2>
+<p>ZenFlow stores display settings and personal queue decisions in browser local storage. In Jira mode, the storage key contains the Jira site identifier and the signed-in user's account identifier. Stored queue preferences include Jira issue keys and their selected dispositions. The application does not have a separate server-side database for these preferences. Local preferences remain in the browser until the site data is cleared or the browser removes them. Users can clear the app's local data through their browser.</p>
+<p>Ticket details and AI results are held in the active page's memory. The current application does not persist AI responses in its browser preference storage. Normal hosting, infrastructure and provider logs may be subject to their own processing and retention policies.</p>
+<h2>Optional TypeSafe Jev analysis</h2>
+<p>When the app owner enables Jev and a user explicitly selects <strong>Analyze with Jev</strong>, the server checks the selected issue's assignment and the user's Jira access again. It sends the issue summary, priority, due date and current date to TypeSafe at <code>api.typesafe.ai</code>, along with instructions for the triage recommendation. Summaries can contain personal or sensitive business information. Users should request AI analysis only for tickets their organization permits to be processed by this external service.</p>
+<p>The Jev request does not include an issue description, attachment, comment, Jira account identifier or issue key in its request payload. The app owner's TypeSafe API credential is used by the server to authenticate the request and is not shared with the browser.</p>
+<p>TypeSafe processes AI requests under its own terms, configuration and privacy policies. See <a href="https://typesafe.ai/legal/privacy-policy">TypeSafe's privacy policy</a> and <a href="https://help.typesafe.ai/articles/5974925716">data use and retention information</a>. The current ZenFlow implementation does not independently verify a customer's TypeSafe retention settings or guarantee deletion by the provider.</p>
+<p>Jev recommendations are advisory. Users decide whether to act on them. Rule-based triage and visual controls work without requesting Jev analysis.</p>
+<h2>Local demo</h2>
+<p>The standalone local demo uses synthetic tickets and example recommendations. It does not connect to Jira or contact the TypeSafe API. Demo display and queue preferences are saved in browser local storage.</p>
+<h2>Questions and requests</h2>
+<p>For questions about ZenFlow's processing or requests related to the app, use the support contact provided on the Forge installation page when available. For source review, contact the repository owner through the existing project communication channel. Include only the information needed to address the request; do not send API keys or confidential Jira content in a public issue.</p>
+<p>Atlassian platform processing and account data are also subject to the <a href="https://www.atlassian.com/legal/privacy-policy">Atlassian privacy policy</a>.</p>
+</main>
+<footer>ZenFlow AI · LOUFFI Edition</footer>
+</body>
+</html>
